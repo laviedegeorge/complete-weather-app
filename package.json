@@ -1,0 +1,30 @@
+{
+  "name": "complete-weather-app",
+  "version": "1.0.0",
+  "description": "A weather app that is PWA and stores data in local storage.",
+  "main": "index.js",
+  "scripts": {
+    "dev": "parcel src/index.html",
+    "build": "parcel build src/index.html"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/laviedegeorge/complete-weather-app.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/laviedegeorge/complete-weather-app/issues"
+  },
+  "homepage": "https://github.com/laviedegeorge/complete-weather-app#readme",
+  "devDependencies": {
+    "eslint": "^7.8.1",
+    "eslint-config-airbnb-base": "^14.2.0",
+    "eslint-plugin-import": "^2.22.0",
+    "parcel-bundler": "^1.12.4"
+  },
+  "dependencies": {
+    "tailwindcss": "^1.8.4"
+  }
+}

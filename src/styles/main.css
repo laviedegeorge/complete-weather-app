@@ -1,0 +1,37 @@
+.main {
+    grid-template-columns: 2.5fr 1fr;
+}
+
+.main_weather-info {
+    height: calc(100vh - 57px);
+}
+
+sup {
+    font-size: 1.875rem !important;
+    left: -.5em;
+    top: -1.2em;
+}
+
+.side-nav {
+    width: 80%;
+    background-color: #333333;
+    position: absolute;
+    top: 0;
+    left: 20%;
+}
+
+.expand {
+    height: calc(100vh - 65px);
+}
+
+.rotate {
+    transform: rotate(180deg);
+}
+
+@media (max-width: 450px) {
+    .main {
+      width: 100%;
+      grid-template-columns: 100% 50%;
+      overflow: hidden;
+    }
+}

@@ -1,11 +1,70 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+  <head>
     <meta charset="UTF-8">
+    <meta name="description" content="This is a web application to show the weather condition for the location requested">
+    <meta name="keywords" content="weather-information, weather, forecasts">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>The Weather App.</title>
-<link rel="stylesheet" href="/src.e31bb0bc.css"></head>
-<body>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <link href="https://unpkg.com/tailwindcss@^1.0/dist/tailwind.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="/src.e31bb0bc.css"></head>
+  <body>
+    <div class="main h-screen grid bg-teal-400">
+      <!-- WEATHER BODY CONTAINER STARTS HERE -->
+      <div class="main_weather" id="main_weather">
+        <div class="header flex justify-between items-center px-4 py-4">
+          <h1 class="">The weather App</h1>
+          <!-- MOBILE BUTTON STARTS HERE -->
+          <nav>
+            <button class="material-icons toggle lg:hidden"> menu </button>
+          </nav>
+          <!-- MOBILE BUTTON ENDS HERE -->
+        </div>
+
+        <div class="main_weather-info flex flex-col justify-end overflow-hidden" id="main_weather-info">
+          <div class="flex items-end pl-4">
+            <p class="degrees text-6xl font-bold leading-none">
+              24
+              <sup class="text-sm font-light" id="deg">O</sup>
+            </p>
+            <div class="location-time">
+              <p class="location capitalize text-3xl" id="location">Wamba</p>
+              <p class="date text-xs md:text-base" id="date">19:24 - Tue, 8 Mar. 2020</p>
+            </div>
+            <p class="weather text-xs md:text-base pl-3" id="weather_cont">light rain</p>
+          </div>
+          <div class="bg-white" id="more_info_cont">
+            <button class="material-icons w-full text-center text-teal-400" id="push_up">arrow-up</button>
+            <div></div>
+          </div>
+        </div>
+      </div>
+      <!-- WEATHER BODY CONTAINER ENDS HERE -->
+
+      <!-- WEATHER DETAILS CONTAINER STARTS HERE -->
+      <div class="main_details h-screen bg-black text-white lg:opacity-50 pl-5" id="main-details">
+        <div class="enter-location flex justify-between items-end">
+          <input type="text" id="city_input" class="w-full bg-transparent border-b mr-4 pb-2" placeholder="Another location">
+          <button class="bg-teal-400 capitalize p-5" id="search">search</button>
+        </div>
+        <ul class="suggested-location w-10/12 border-b mb-4">
+          <li class="font-bold text-lg pt-5">Recently searched</li>
+          <li class="py-5">London</li>
+          <li class="py-5">Lagos</li>
+          <li class="py-5">Beijing</li>
+          <li class="py-5">New york</li>
+        </ul>
+        <div class="weather-details-cont w-10/12 border-b">
+          <p class="font-bold text-lg pt-5">Weather Details</p>
+          <p class="flex justify-between py-5">Cloudy <span id="cloudy"></span></p>
+          <p class="flex justify-between py-5">Humidity <span id="humidity"></span></p>
+          <p class="flex justify-between py-5">Wind <span id="wind"></span></p>
+        </div>
+      </div>
+      <!-- WEATHER DETAILS CONTAINER ENDS HERE -->
+    </div>
     <script src="/src.e31bb0bc.js"></script>
-</body>
+    <script src="/ui.59cf47a3.js"></script>
+  </body>
 </html>

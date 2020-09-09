@@ -189,11 +189,153 @@ var reloadCSS = require('_css_loader');
 
 module.hot.dispose(reloadCSS);
 module.hot.accept(reloadCSS);
-},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"index.js":[function(require,module,exports) {
+},{"_css_loader":"../node_modules/parcel-bundler/src/builtins/css-loader.js"}],"js/getWeather.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+var API_KEY = 'b8aa6b77e85dc3ac3f6db7694ca0e9ea';
+
+var getCityData = function getCityData() {
+  var city = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
+  var lat = arguments.length > 1 && arguments[1] !== undefined ? arguments[1] : 9.08;
+  var long = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : 8.68;
+  var url;
+
+  if (city !== '') {
+    url = "//api.openweathermap.org/data/2.5/weather?q=".concat(city, "&appid=").concat(API_KEY, "&units=metric");
+  } else {
+    url = "//api.openweathermap.org/data/2.5/weather?lat=".concat(lat, "&lon=").concat(long, "&appid=").concat(API_KEY, "&units=metric");
+  }
+
+  return new Promise(function (res, err) {
+    fetch(url).then(function (response) {
+      return response.json();
+    }).then(res).catch(err);
+  });
+};
+
+var getCityInfo = function getCityInfo(city, displayData, lat, long) {
+  getCityData(city, lat, long).then(displayData).catch(function (err) {
+    // eslint-disable-next-line no-console
+    console.log(err, 'City not Found!!!');
+  });
+};
+
+var _default = getCityInfo;
+exports.default = _default;
+},{}],"js/displayInfo.js":[function(require,module,exports) {
+"use strict";
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+exports.default = void 0;
+
+var displayTime = function displayTime(time) {
+  var dateArr = ['Sun', 'Mon', 'Tue', 'Wed', 'Thur', 'Fri', 'Sat'];
+  var monthArr = ['Jan.', 'Feb.', 'Mar.', 'Apr.', 'May', 'Jun.', 'July', 'Aug.', 'Sept.', 'Oct.', 'Nov.', 'Dec.'];
+  var hr = time.getHours();
+  var mins = time.getMinutes();
+  var day = dateArr[time.getDay()];
+  var date = time.getDate();
+  var month = monthArr[time.getDay()];
+  var yr = time.getFullYear();
+  document.getElementById('date').innerHTML = "".concat(hr, ":").concat(mins, " - ").concat(day, ", ").concat(date, " ").concat(month, " ").concat(yr);
+};
+
+var calcTime = function calcTime(tZone) {
+  // offset in hours
+  var offset = tZone / 3600; // create Date object for current location
+
+  var d = new Date(); // convert to msec
+  // add local time zone offset
+  // get UTC time in msec
+
+  var utc = d.getTime() + d.getTimezoneOffset() * 60000; // create new Date object for different city
+  // using supplied offset
+
+  var nd = new Date(utc + 3600000 * offset);
+  displayTime(nd);
+};
+
+var displayInfo = function displayInfo(obj) {
+  document.getElementById('deg').innerHTML = "".concat(Math.round(obj.main.temp), "<sup class=\"text-sm font-light\">0</sup>");
+  document.getElementById('location').innerHTML = obj.name;
+  var weatherIcon = document.createElement('img');
+  weatherIcon.setAttribute('src', "http://openweathermap.org/img/wn/".concat(obj.weather[0].icon, ".png"));
+  weatherIcon.setAttribute('height', '35px');
+  weatherIcon.setAttribute('width', '35px');
+  var weatherDescription = document.createElement('span');
+  weatherDescription.innerHTML = "".concat(obj.weather[0].description);
+  document.getElementById('weather_cont').innerHTML = '';
+  document.getElementById('weather_cont').innerHTML = '';
+  document.getElementById('weather_cont').append(weatherIcon);
+  document.getElementById('weather_cont').append(weatherDescription);
+  document.getElementById('cloudy').innerHTML = "".concat(obj.clouds.all, "%");
+  document.getElementById('humidity').innerHTML = "".concat(obj.main.humidity, "%");
+  document.getElementById('wind').innerHTML = "".concat(obj.wind.speed, "km/h");
+  calcTime(obj.timezone);
+};
+
+var _default = displayInfo;
+exports.default = _default;
+},{}],"index.js":[function(require,module,exports) {
 "use strict";
 
 require("./styles/main.css");
-},{"./styles/main.css":"styles/main.css"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
+
+var _getWeather = _interopRequireDefault(require("./js/getWeather"));
+
+var _displayInfo = _interopRequireDefault(require("./js/displayInfo"));
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var mainD = document.getElementById('main-details');
+document.getElementById('city_input').value = '';
+
+var displayData = function displayData(obj) {
+  (0, _displayInfo.default)(obj);
+};
+
+var getCity = function getCity() {
+  mainD.classList.remove('side-nav');
+  var city = document.getElementById('city_input').value;
+  (0, _getWeather.default)(city, displayData);
+};
+/* ----------------CLICKING ON THE SEARCH BUTTON ------------------------------*/
+
+
+var searchBtn = document.getElementById('search');
+searchBtn.addEventListener('click', getCity);
+/* ---------------CLICKING ON THE SUGGESTED LOCATIONS -------------------------*/
+
+var suggestedLocation = document.querySelectorAll('.suggested-location li');
+suggestedLocation.forEach(function (li) {
+  li.addEventListener('click', function (e) {
+    mainD.classList.remove('side-nav');
+    var value = e.target.innerHTML;
+    (0, _getWeather.default)(value, displayData);
+  });
+});
+/* --------------------GETTING USER LOCATION ----------------------------------*/
+
+var getLocationByCords = function getLocationByCords(position) {
+  var city = '';
+  var lat = position.coords.latitude.toFixed(2);
+  var long = position.coords.longitude.toFixed(2);
+  (0, _getWeather.default)(city, displayData, lat, long);
+};
+
+if (navigator.geolocation) {
+  navigator.geolocation.getCurrentPosition(getLocationByCords);
+} else {
+  // eslint-disable-next-line no-alert
+  alert('Geolocation is not supported by this browser or is disabled.');
+}
+},{"./styles/main.css":"styles/main.css","./js/getWeather":"js/getWeather.js","./js/displayInfo":"js/displayInfo.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
 var OldModule = module.bundle.Module;
@@ -221,7 +363,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "54154" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56240" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

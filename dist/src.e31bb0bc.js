@@ -293,17 +293,75 @@ var _displayInfo = _interopRequireDefault(require("./js/displayInfo"));
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
+function _toConsumableArray(arr) { return _arrayWithoutHoles(arr) || _iterableToArray(arr) || _unsupportedIterableToArray(arr) || _nonIterableSpread(); }
+
+function _nonIterableSpread() { throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method."); }
+
+function _unsupportedIterableToArray(o, minLen) { if (!o) return; if (typeof o === "string") return _arrayLikeToArray(o, minLen); var n = Object.prototype.toString.call(o).slice(8, -1); if (n === "Object" && o.constructor) n = o.constructor.name; if (n === "Map" || n === "Set") return Array.from(o); if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return _arrayLikeToArray(o, minLen); }
+
+function _iterableToArray(iter) { if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter); }
+
+function _arrayWithoutHoles(arr) { if (Array.isArray(arr)) return _arrayLikeToArray(arr); }
+
+function _arrayLikeToArray(arr, len) { if (len == null || len > arr.length) len = arr.length; for (var i = 0, arr2 = new Array(len); i < len; i++) { arr2[i] = arr[i]; } return arr2; }
+
 var mainD = document.getElementById('main-details');
-document.getElementById('city_input').value = '';
+var clicked = false;
+var oldItems = localStorage.searchedCities ? JSON.parse(localStorage.getItem('searchedCities')) : [];
+/* -------- DISPLAY CITES FROM LOCALSTORAGE IN SIDE NAV --------------- */
+
+var displayRecentlySearchedCities = function displayRecentlySearchedCities() {
+  var p = document.createElement('p');
+  p.classList.add('py-10');
+  p.innerHTML = 'No recently searched city yet!';
+  var recentSearches = document.getElementById('recent_searches');
+  var cities = localStorage.searchedCities ? JSON.parse(localStorage.getItem('searchedCities')).map(function (city) {
+    var li = document.createElement('li');
+    li.classList.add('loc', 'py-5', 'capitalize', 'cursor-pointer');
+    li.innerHTML = city;
+    return li;
+  }) : [];
+  recentSearches.innerHTML = '';
+
+  if (cities.length === 0) {
+    recentSearches.append(p);
+  } else {
+    recentSearches.append.apply(recentSearches, _toConsumableArray(cities));
+  }
+};
+/* --------------- ADD CITY TO LOCALSTORAGE ------------------------ */
+
+
+var addCityToLocalStorage = function addCityToLocalStorage(obj) {
+  if (_typeof(obj) === 'object') {
+    oldItems.push(document.getElementById('city_input').value);
+    localStorage.setItem('searchedCities', JSON.stringify(oldItems));
+  }
+
+  displayRecentlySearchedCities();
+  document.getElementById('city_input').value = '';
+};
+/* ------------- DISPLAY DATA IN UI -------------------- */
+
 
 var displayData = function displayData(obj) {
   (0, _displayInfo.default)(obj);
+
+  if (clicked) {
+    addCityToLocalStorage(obj);
+    clicked = false;
+  }
 };
+/* -------------GET THE CITY DATA---------------- */
+
 
 var getCity = function getCity() {
+  clicked = true;
   mainD.classList.remove('side-nav');
-  var city = document.getElementById('city_input').value;
-  (0, _getWeather.default)(city, displayData);
+  var loc = document.getElementById('city_input').value;
+  (0, _getWeather.default)(loc, displayData);
 };
 /* ----------------CLICKING ON THE SEARCH BUTTON ------------------------------*/
 
@@ -312,21 +370,20 @@ var searchBtn = document.getElementById('search');
 searchBtn.addEventListener('click', getCity);
 /* ---------------CLICKING ON THE SUGGESTED LOCATIONS -------------------------*/
 
-var suggestedLocation = document.querySelectorAll('.suggested-location li');
-suggestedLocation.forEach(function (li) {
-  li.addEventListener('click', function (e) {
+var suggestedLocation = document.getElementById('recent_searches');
+suggestedLocation.addEventListener('click', function (e) {
+  if (e.target.classList.contains('loc')) {
     mainD.classList.remove('side-nav');
     var value = e.target.innerHTML;
     (0, _getWeather.default)(value, displayData);
-  });
+  }
 });
 /* --------------------GETTING USER LOCATION ----------------------------------*/
 
 var getLocationByCords = function getLocationByCords(position) {
-  var city = '';
   var lat = position.coords.latitude.toFixed(2);
   var long = position.coords.longitude.toFixed(2);
-  (0, _getWeather.default)(city, displayData, lat, long);
+  (0, _getWeather.default)('', displayData, lat, long);
 };
 
 if (navigator.geolocation) {
@@ -335,6 +392,8 @@ if (navigator.geolocation) {
   // eslint-disable-next-line no-alert
   alert('Geolocation is not supported by this browser or is disabled.');
 }
+
+displayRecentlySearchedCities();
 },{"./styles/main.css":"styles/main.css","./js/getWeather":"js/getWeather.js","./js/displayInfo":"js/displayInfo.js"}],"../node_modules/parcel-bundler/src/builtins/hmr-runtime.js":[function(require,module,exports) {
 var global = arguments[3];
 var OVERLAY_ID = '__parcel__error__overlay__';
@@ -363,7 +422,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "56240" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51843" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};

@@ -9,6 +9,7 @@
     <meta name="keywords" content="weather-information, weather, forecasts" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Weather App.</title>
+    <link rel="manifest" href="../manifest.json">
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
@@ -63,12 +64,8 @@
           />
           <button class="bg-teal-400 capitalize p-5" id="search">search</button>
         </div>
-        <ul class="suggested-location w-10/12 border-b mb-4">
-          <li class="font-bold text-lg pt-5">Recently searched</li>
-          <li class="py-5">London</li>
-          <li class="py-5">Lagos</li>
-          <li class="py-5">Beijing</li>
-          <li class="py-5">New york</li>
+        <p class="font-bold text-lg pt-5">Recently searched</p>
+        <ul class="suggested-location w-10/12 border-b mb-4" id="recent_searches">
         </ul>
         <div class="weather-details-cont w-10/12 border-b">
           <p class="font-bold text-lg pt-5">Weather Details</p>

@@ -9,6 +9,7 @@
     <meta name="keywords" content="weather-information, weather, forecasts" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>The Weather App.</title>
+    <link rel="manifest" href="../manifest.json">
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
       rel="stylesheet"
@@ -32,16 +33,14 @@
         </div>
 
         <div class="main_weather-info flex flex-col justify-end overflow-hidden" id="main_weather-info">
-          <div class="flex items-end pl-4">
-            <p class="degrees text-6xl font-bold leading-none">
-              24
-              <sup class="text-sm font-light" id="deg">O</sup>
+          <div class="flex items-end pl-4 mb-2">
+            <p class="degrees text-6xl font-bold leading-none pr-4" id="deg">
             </p>
             <div class="location-time">
-              <p class="location capitalize text-3xl" id="location">Wamba</p>
-              <p class="date text-xs md:text-base" id="date">19:24 - Tue, 8 Mar. 2020</p>
+              <p class="location capitalize text-3xl lg:text-5xl" id="location"></p>
+              <p class="date text-xs md:text-base" id="date"></p>
             </div>
-            <p class="weather text-xs md:text-base pl-3" id="weather_cont">light rain</p>
+            <p class="weather flex flex-col items-center justify-center text-xs md:text-base pl-5" id="weather_cont"></p>
           </div>
           <div class="bg-white" id="more_info_cont">
             <button class="material-icons w-full text-center text-teal-400" id="push_up">arrow-up</button>
@@ -65,12 +64,8 @@
           />
           <button class="bg-teal-400 capitalize p-5" id="search">search</button>
         </div>
-        <ul class="suggested-location w-10/12 border-b mb-4">
-          <li class="font-bold text-lg pt-5">Recently searched</li>
-          <li class="py-5">London</li>
-          <li class="py-5">Lagos</li>
-          <li class="py-5">Beijing</li>
-          <li class="py-5">New york</li>
+        <p class="font-bold text-lg pt-5">Recently searched</p>
+        <ul class="suggested-location w-10/12 border-b mb-4" id="recent_searches">
         </ul>
         <div class="weather-details-cont w-10/12 border-b">
           <p class="font-bold text-lg pt-5">Weather Details</p>

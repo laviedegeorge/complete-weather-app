@@ -8,8 +8,7 @@
 
 sup {
     font-size: 1.875rem !important;
-    left: -.5em;
-    top: -1.2em;
+    top: -2em;
 }
 
 .side-nav {
@@ -28,10 +27,23 @@ sup {
     transform: rotate(180deg);
 }
 
+.degrees {
+    font-size: 7em;
+}
+
 @media (max-width: 450px) {
     .main {
       width: 100%;
       grid-template-columns: 100% 50%;
       overflow: hidden;
+    }
+
+    .degrees {
+        font-size: 5em;
+    }
+
+    sup {
+        font-size: 1.875rem !important;
+        top: -1.2em;
     }
 }

@@ -39,6 +39,7 @@ const addCityToLocalStorage = (obj) => {
 
 /* ------------- DISPLAY DATA IN UI -------------------- */
 const displayData = (obj) => {
+  /* console.log(obj); */
   displayInfo(obj);
   if (clicked) {
     addCityToLocalStorage(obj);

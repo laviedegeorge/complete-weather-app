@@ -197,6 +197,8 @@ Object.defineProperty(exports, "__esModule", {
 });
 exports.default = void 0;
 var API_KEY = 'b8aa6b77e85dc3ac3f6db7694ca0e9ea';
+/* `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${long}&
+    exclude=minutely&appid=${API_KEY}&units=metric` */
 
 var getCityData = function getCityData() {
   var city = arguments.length > 0 && arguments[0] !== undefined ? arguments[0] : '';
@@ -207,7 +209,7 @@ var getCityData = function getCityData() {
   if (city !== '') {
     url = "//api.openweathermap.org/data/2.5/weather?q=".concat(city, "&appid=").concat(API_KEY, "&units=metric");
   } else {
-    url = "//api.openweathermap.org/data/2.5/weather?lat=".concat(lat, "&lon=").concat(long, "&appid=").concat(API_KEY, "&units=metric");
+    url = "https://api.openweathermap.org/data/2.5/onecall?lat=".concat(lat, "&lon=").concat(long, "&\n    exclude=minutely&appid=").concat(API_KEY, "&units=metric");
   }
 
   return new Promise(function (res, err) {
@@ -347,6 +349,7 @@ var addCityToLocalStorage = function addCityToLocalStorage(obj) {
 
 
 var displayData = function displayData(obj) {
+  /* console.log(obj); */
   (0, _displayInfo.default)(obj);
 
   if (clicked) {
@@ -422,7 +425,7 @@ var parent = module.bundle.parent;
 if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== 'undefined') {
   var hostname = "" || location.hostname;
   var protocol = location.protocol === 'https:' ? 'wss' : 'ws';
-  var ws = new WebSocket(protocol + '://' + hostname + ':' + "51843" + '/');
+  var ws = new WebSocket(protocol + '://' + hostname + ':' + "53188" + '/');
 
   ws.onmessage = function (event) {
     checkedAssets = {};
